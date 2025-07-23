@@ -1,0 +1,27 @@
+@import url('https://fonts.googleapis.com/css2?family=Intel+One+Mono:ital,wght@0,300..700;1,300..700&display=swap');
+@import 'tailwindcss';
+@plugin '@tailwindcss/forms';
+body{
+    @apply bg-black text-gray-900;
+    font-family: "Intel One Mono", monospace;
+    font-optical-sizing: auto;
+}
+@theme {
+    --color-osebrand-50:  #FDEBED;
+    --color-rosebrand-100: #F9D2D7;
+    --color-rosebrand-200: #F3A9B2;
+    --color-rosebrand-300: #E8758C;
+    --color-rosebrand-500: #A63A50;
+    --color-rosebrand-600: #892F41;
+    --color-rosebrand-700: #6F2636;
+    --color-rosebrand-800: #521C29;
+
+    --color-hotrose-50:  #FEEBEE;
+    --color-hotrose-100: #FDCBD0;
+    --color-hotrose-200: #FB9CA3;
+    --color-hotrose-300: #F66E79;
+    --color-hotrose-500: #F45B69;
+    --color-hotrose-600: #D44E5A;
+    --color-hotrose-700: #B3414D;
+    --color-hotrose-800: #8C343E;
+}
