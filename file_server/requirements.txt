@@ -1,0 +1,5 @@
+flask
+peewee
+dotenv
+psycopg2
+bcrypt
