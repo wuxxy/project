@@ -4,7 +4,7 @@ import {user} from "$lib/authStore.js";
 import {Trash2} from "lucide-svelte";
 </script>
 <!-- Outer container -->
-<div class="max-w-5xl mx-auto mt-16 bg-black/60 border border-white/10 backdrop-blur-md rounded-xl overflow-hidden shadow-xl">
+<div class="lg:w-1/2 mx-auto mt-16 bg-black/60 border border-white/10 backdrop-blur-md rounded-xl overflow-hidden shadow-xl">
     <!-- Header Banner with avatar -->
     <div class="relative h-44 bg-gradient-to-br from-hotrose-950 to-hotrose-800">
         <img
@@ -42,7 +42,6 @@ import {Trash2} from "lucide-svelte";
                         <th class="px-4 py-3"></th>
                         <th class="px-4 py-3">Device</th>
                         <th class="px-4 py-3">Last Used</th>
-                        <th class="px-4 py-3">Expires</th>
                     </tr>
                     </thead>
                     <tbody class="divide-y divide-white/10">
@@ -55,9 +54,7 @@ import {Trash2} from "lucide-svelte";
                             <td class="px-4 py-3 text-white/60">
                                 {new Date(session.last_used).toLocaleString()}
                             </td>
-                            <td class="px-4 py-3 text-white/60">
-                                {new Date(session.expires_at).toLocaleString()}
-                            </td>
+
                         </tr>
                     {/each}
                     </tbody>

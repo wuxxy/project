@@ -2,8 +2,8 @@ package auth
 
 import (
 	"github.com/kataras/iris/v12"
-	"github.com/wuxxy/auth/database"
-	"github.com/wuxxy/auth/models"
+	"github.com/wuxxy/project/main/database"
+	"github.com/wuxxy/project/main/models"
 )
 
 func Me(c iris.Context) {

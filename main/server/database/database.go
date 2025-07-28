@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/wuxxy/auth/models"
+	"github.com/wuxxy/project/main/models"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )

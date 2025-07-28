@@ -1,4 +1,4 @@
-module github.com/wuxxy/auth
+module github.com/wuxxy/project/main
 
 go 1.24.3
 

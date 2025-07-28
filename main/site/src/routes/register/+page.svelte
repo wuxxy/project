@@ -17,7 +17,7 @@
     let emailErrors = $state(['']);
     onMount(() => {
         user.fetchUser();
-        if (user){
+        if (user.username){
             // If user is already logged in, redirect to home
             window.location.href = '/';
         }

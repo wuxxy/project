@@ -14,9 +14,9 @@ import (
 	"github.com/go-playground/validator/v10"
 	"github.com/google/uuid"
 	"github.com/kataras/iris/v12"
-	"github.com/wuxxy/auth/database"
-	"github.com/wuxxy/auth/models"
-	"github.com/wuxxy/auth/tokens"
+	"github.com/wuxxy/project/main/database"
+	"github.com/wuxxy/project/main/models"
+	"github.com/wuxxy/project/main/tokens"
 )
 
 var validate = validator.New()

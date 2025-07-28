@@ -4,9 +4,9 @@ import (
 	"time"
 
 	"github.com/kataras/iris/v12"
-	"github.com/wuxxy/auth/database"
-	"github.com/wuxxy/auth/models"
-	"github.com/wuxxy/auth/tokens"
+	"github.com/wuxxy/project/main/database"
+	"github.com/wuxxy/project/main/models"
+	"github.com/wuxxy/project/main/tokens"
 )
 
 // Token Handler for generating a new access token using refresh token.
@@ -35,6 +35,11 @@ func Token(c iris.Context) {
 		c.StatusCode(iris.StatusUnauthorized)
 		_ = c.JSON(iris.Map{"error": "Session not found"})
 		c.RemoveCookie("refresh")
+		return
+	}
+	if (session.UserAgent != c.GetHeader("User-Agent")) || (session.IP != c.GetHeader("X-Forwarded-For") && session.IP != c.GetHeader("X-Real-IP") && session.IP != c.RemoteAddr()) {
+		c.StatusCode(iris.StatusUnauthorized)
+		_ = c.JSON(iris.Map{"error": "User agent mismatch"})
 		return
 	}
 	session.LastUsed = time.Now()

@@ -1,11 +1,10 @@
 package middleware
 
 import (
-	"log"
 	"strings"
 
 	"github.com/kataras/iris/v12"
-	"github.com/wuxxy/auth/tokens"
+	"github.com/wuxxy/project/main/tokens"
 )
 
 func AuthMiddleware(ctx iris.Context) {
@@ -26,7 +25,6 @@ func AuthMiddleware(ctx iris.Context) {
 	if err != nil {
 		ctx.StatusCode(iris.StatusUnauthorized)
 		_ = ctx.JSON(iris.Map{"error": "Invalid or expired token"})
-		log.Printf(err.Error())
 		return
 	}
 
