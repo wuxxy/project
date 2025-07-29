@@ -4,11 +4,15 @@
 	let { children } = $props();
     import {onMount} from "svelte";
     import {user} from "$lib/authStore";
+    import {browser} from "$app/environment";
 
 
     // Listen to scroll
     onMount(() => {
-        user.fetchUser();
+        if(browser) {
+            user.fetchUser();
+
+        }
     });
     function logout() {
         user.logout();
@@ -40,6 +44,11 @@
                 <!-- Dropdown -->
                 <div class="ease-in-out  absolute right-0 mt-2 w-40 bg-black border border-white/10 rounded shadow-lg opacity-0 group-hover:opacity-100 pointer-events-none group-hover:pointer-events-auto transition duration-300 z-50">
                     <ul class="py-2 text-sm text-white/90">
+                        {#if $user.is_admin}
+                            <li>
+                                <a href="/admin" class="block px-4 py-2 hover:bg-white/10 text-red-500">Admin Panel</a>
+                            </li>
+                        {/if}
                         <li>
                             <a href="/profile" class="block px-4 py-2 hover:bg-white/10">Profile</a>
                         </li>

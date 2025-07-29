@@ -6,6 +6,7 @@ import (
 	"github.com/wuxxy/project/main/models"
 )
 
+// Logout handles user logout by clearing the refresh token cookie and deleting the session from the database.
 func Logout(c iris.Context) {
 	// Clear the refresh token cookie
 	sessionID := c.Values().Get("session_id")

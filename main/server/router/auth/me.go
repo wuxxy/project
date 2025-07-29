@@ -6,6 +6,7 @@ import (
 	"github.com/wuxxy/project/main/models"
 )
 
+// Me Handler for fetching the authenticated user's details
 func Me(c iris.Context) {
 	// Get user ID from context
 	userID := c.Values().Get("user_id")

@@ -24,6 +24,7 @@ type User struct {
 	Suspended  bool           `json:"suspended" gorm:"default:false"`
 	Disable    bool           `json:"disable" gorm:"default:false"`
 	Premium    bool           `json:"premium" gorm:"default:false"`
+	IsAdmin    bool           `json:"is_admin" gorm:"default:false"`
 }
 
 func (u *User) BeforeCreate(tx *gorm.DB) (err error) {

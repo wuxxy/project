@@ -18,6 +18,7 @@ type User = {
     suspended: boolean;
     disable: boolean;
     premium: boolean;
+    is_admin: boolean;
 } | null;
 
 function createUserStore() {
@@ -30,7 +31,8 @@ function createUserStore() {
         } catch (err) {
             try{
                 // Attempt to refresh token if available
-                    if(err.response.data.error =="Invalid or expired token"){
+                    // @ts-ignore
+                if(err.response.data.error =="Invalid or expired token"){
                         const refreshRes = await client.post('/auth/token');
                         localStorage.setItem('accessToken', refreshRes.data.access_token);
                         // Retry fetching user after refreshing token

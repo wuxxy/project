@@ -28,7 +28,7 @@ func ConnectToDb() {
 	if err != nil {
 		panic("failed to connect database")
 	}
-	err = Db.AutoMigrate(&models.User{}, &models.Session{})
+	err = Db.AutoMigrate(&models.User{}, &models.Session{}, &models.Service{})
 	if err != nil {
 		panic("failed to connect database")
 	}

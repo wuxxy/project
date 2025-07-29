@@ -14,7 +14,7 @@ func StartServer(port string) {
 	app.Logger().SetLevel("debug")
 	crs := cors.New(cors.Options{
 		AllowedOrigins:   []string{"http://localhost:5173", "http://localhost:4173", "http://localhost:5603"},
-		AllowedMethods:   []string{"GET", "POST", "OPTIONS"},
+		AllowedMethods:   []string{"GET", "POST", "OPTIONS", "PUT", "DELETE"},
 		AllowedHeaders:   []string{"Content-Type", "Authorization", "X-CSRF-Token"},
 		AllowCredentials: true,
 	})
