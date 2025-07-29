@@ -1,4 +1,4 @@
-package ws
+package session
 
 import (
 	"time"

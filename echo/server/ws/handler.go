@@ -4,57 +4,110 @@ import (
 	"context"
 	"log"
 	"net/http"
+	"time"
+
+	"encoding/json"
 
 	"github.com/coder/websocket"
+	"github.com/wuxxy/project/echo/ws/handlers"
+	"github.com/wuxxy/project/echo/ws/utils"
 )
 
-type AuthRequestData struct {
-	Token string `json:"access_token"`
-}
-type Request[T AuthRequestData] struct {
-	Data      T       `json:"data"`
-	Op        uint8   `json:"op"`
-	SessionId *string `json:"sid"`
+type Request struct {
+	Data      map[string]any `json:"data"`
+	Op        uint8          `json:"op"`
+	SessionId *string        `json:"sid"`
 }
 type OpCode uint8
-type Handler func(*websocket.Conn, any) error
+type HandlerFunction func(*websocket.Conn, map[string]any) error
 
-var handlers = map[OpCode]Handler{}
+var handlersRegistry = map[OpCode]HandlerFunction{}
 
 func ServeWS(port string) {
 	http.HandleFunc("/ws", func(w http.ResponseWriter, r *http.Request) {
-		// Upgrade to WebSocket
 		conn, err := websocket.Accept(w, r, &websocket.AcceptOptions{
-			InsecureSkipVerify: true, // skip Origin check (you can tighten this later)
+			InsecureSkipVerify: true,
 		})
 		if err != nil {
-			log.Println("Accept error:", err)
+			log.Println("WebSocket accept error:", err)
 			return
 		}
-		defer conn.Close(websocket.StatusNormalClosure, "goodbye")
-
+		defer conn.Close(websocket.StatusNormalClosure, "connection closed gracefully")
+		conn.SetReadLimit(1024)
 		log.Println("WebSocket connection established")
 
-		// Echo loop
+		// Heartbeat tracking
+		const heartbeatTimeout = 10 * time.Second // allow some buffer
+		lastHeartbeat := time.Now()
+
+		done := make(chan struct{})
+
+		// Start heartbeat monitor
+		go func() {
+			ticker := time.NewTicker(heartbeatTimeout)
+			defer ticker.Stop()
+
+			for {
+				select {
+				case <-ticker.C:
+					if time.Since(lastHeartbeat) > heartbeatTimeout {
+						log.Println("Heartbeat timeout. Closing connection.")
+						conn.Close(websocket.StatusPolicyViolation, "missed heartbeat")
+						return
+					}
+				case <-done:
+					return
+				}
+			}
+		}()
+
+		// Read loop
 		for {
-			// Read message
-			msgType, data, err := conn.Read(context.Background())
+			ctx, cancel := context.WithTimeout(context.Background(), 15*time.Second)
+			_, data, err := conn.Read(ctx)
+			cancel()
+
 			if err != nil {
-				log.Println("Read error:", err)
+				log.Println("WebSocket read error:", err)
 				break
 			}
 
-			log.Printf("Received: %s\n", data)
+			var incoming Request
+			if err := json.Unmarshal(data, &incoming); err != nil {
+				utils.CloseConnection(conn, websocket.StatusUnsupportedData, "Invalid JSON")
+				break
+			}
 
-			// Write back
-			if err := conn.Write(context.Background(), msgType, data); err != nil {
-				log.Println("Write error:", err)
+			if incoming.Data == nil {
+				utils.CloseConnection(conn, websocket.StatusUnsupportedData, "Missing data")
+				break
+			}
+
+			// Check for heartbeat op: 2
+			if incoming.Op == 2 {
+				lastHeartbeat = time.Now()
+				continue // no need to call a handler
+			}
+
+			handler := handlersRegistry[OpCode(incoming.Op)]
+			if handler == nil {
+				utils.CloseConnection(conn, websocket.StatusUnsupportedData, "Unknown op")
+				break
+			}
+
+			if err := handler(conn, incoming.Data); err != nil {
+				log.Println("Handler error:", err)
 				break
 			}
 		}
+
+		close(done)
 	})
 
-}
-func RegisterOP(op uint8, handler func(*websocket.Conn, []byte) error) {
+	handlersRegistry[1] = handlers.Hello
 
+	log.Printf("Starting WebSocket server on port %s\n", port)
+	if err := http.ListenAndServe(port, nil); err != nil {
+		log.Fatalf("ListenAndServe error: %v", err)
+	}
 }
