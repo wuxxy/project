@@ -3,6 +3,10 @@
     import {client} from "$lib/axios.js";
     import {onMount} from "svelte";
     import {user} from "$lib/authStore.js";
+    import {faDiscord, faGithub, faGoogle, faSpotify} from "@fortawesome/free-brands-svg-icons";
+    import Fa from "svelte-fa";
+    import {browser} from "$app/environment";
+    import {goto} from "$app/navigation";
     let selected = 'register';
     let email = $state('');
     let username = $state('');
@@ -16,10 +20,15 @@
     let passwordErrors = $state(['']);
     let emailErrors = $state(['']);
     onMount(() => {
-        user.fetchUser();
-        if (user.username){
-            // If user is already logged in, redirect to home
-            window.location.href = '/';
+        if (browser) {
+            try {
+                // Only access localStorage in the browser
+
+                await user.fetchUser();
+                if($user){
+                    goto("/")
+                }
+            }catch {}
         }
     });
     function submit(){
@@ -75,7 +84,22 @@
                 </button>
             </div>
         </div>
+
         <div class="w-full max-w-md bg-black/30 border border-t-0 rounded-t-none border-rosebrand-700 backdrop-blur-md shadow-xl rounded-xl p-8 space-y-6">
+        <div class="relative text-lg z-10 flex flex-row items-center justify-center gap-2 p-2 text-center">
+            <a class="transition-all duration-75 bg-rosebrand-500/50 shadow-md text-center ring-1 ring-rose-500 hover:text-white hover:ring-rose-400 hover:bg-rosebrand-500 p-2 rounded-md"  href="/discord">
+                <Fa icon={faGoogle} />
+            </a>
+            <a class="transition-all duration-75 bg-rosebrand-500/50 shadow-md ring-1 ring-rose-500 hover:text-white hover:ring-rose-400 hover:bg-rosebrand-500 p-2 rounded-md"  href="/discord">
+                <Fa icon={faDiscord} />
+            </a>
+            <a class="transition-all duration-75 bg-rosebrand-500/50 shadow-md text-center ring-1 ring-rose-500 hover:text-white hover:ring-rose-400 hover:bg-rosebrand-500 p-2 rounded-md"  href="/discord">
+                <Fa icon={faGithub} />
+            </a>
+            <a class="transition-all duration-75 bg-rosebrand-500/50 shadow-md text-center ring-1 ring-rose-500 hover:text-white hover:ring-rose-400 hover:bg-rosebrand-500 p-2 rounded-md"  href="/discord">
+                <Fa icon={faSpotify} />
+            </a>
+        </div>
         <h2 class="text-2xl font-bold text-white text-center tracking-wide">Create an account</h2>
 
         <form onsubmit={submit} class="space-y-5">

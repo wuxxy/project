@@ -15,26 +15,19 @@
     $: icon = type === 'success' ? Check :
               type === 'error' ? AlertTriangle : Info;
 
-    $: bgColor = type === 'success' ? 'bg-gradient-to-r from-emerald-500/95 to-green-600/95' :
-                type === 'error' ? 'bg-gradient-to-r from-red-500/95 to-rose-600/95' :
-                'bg-gradient-to-r from-blue-500/95 to-indigo-600/95';
+    $: bgColor = type === 'success' ? 'bg-emerald-500/90' :
+                type === 'error' ? 'bg-red-500/90' : 'bg-blue-500/90';
 </script>
 
 {#if !dismissed}
     <div
-        class="px-5 py-4 rounded-xl shadow-xl backdrop-blur-md flex items-center gap-4 max-w-md {bgColor}"
+        class="px-4 py-3 rounded-lg shadow-lg backdrop-blur-sm flex items-center gap-3 max-w-md {bgColor}"
         in:fly={{ y: 20, duration: 300 }}
         out:fade={{ duration: 200 }}
     >
-        <div class="bg-white/20 p-2 rounded-full">
-            <svelte:component this={icon} class="w-5 h-5 flex-shrink-0" />
-        </div>
-        <p class="text-white text-sm flex-grow font-medium">{message}</p>
-        <button
-            on:click={dismiss}
-            class="text-white/80 hover:text-white bg-white/10 hover:bg-white/20 p-1.5 rounded-lg transition-colors"
-            aria-label="Dismiss"
-        >
+        <svelte:component this={icon} class="w-5 h-5 flex-shrink-0" />
+        <p class="text-white text-sm flex-grow">{message}</p>
+        <button on:click={dismiss} class="text-white/80 hover:text-white" aria-label="Dismiss">
             <X class="w-4 h-4" />
         </button>
     </div>

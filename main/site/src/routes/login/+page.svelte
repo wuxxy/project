@@ -1,22 +1,34 @@
 <script>
     import { turnstile } from '@svelte-put/cloudflare-turnstile';
+    import Fa from "svelte-fa"
     import {client} from "$lib/axios.js";
     import {onMount} from "svelte";
+    import { page } from '$app/state';
     import {user} from "$lib/authStore.js";
+    import {faDiscord, faGithub, faGoogle, faSpotify} from "@fortawesome/free-brands-svg-icons";
+    import {browser} from "$app/environment";
+    import {goto} from "$app/navigation";
     let selected = 'login'
     let username = $state('');
     let password = $state('');
     let turnstileToken = $state('');
-
+    let redirectUrl = $state('/');
     // Form Error Handling
     let serverError = $state('');
     let usernameErrors = $state(['']);
     let passwordErrors = $state(['']);
-    onMount(() => {
-        user.fetchUser();
-        if (user.username){
-            // If user is already logged in, redirect to home
-            window.location.href = '/';
+    onMount(async () => {
+        redirectUrl = page.url.searchParams.get('r');
+        if (browser) {
+            try {
+                // Only access localStorage in the browser
+
+                await user.fetchUser();
+                if($user){
+                    goto("/")
+                }
+            }catch {}
+
         }
     });
     function submit(){
@@ -28,7 +40,7 @@
                 if (response.status === 200 && response.data.success === true) {
                     // Registration successful, redirect to home + save tokens
                     localStorage.setItem('accessToken', response.data.access_token);
-                    window.location.href = '/';
+                    goto(redirectUrl);
                 } else {
                     serverError = response.data.error || 'An unexpected error occurred.';
                 }
@@ -73,9 +85,24 @@
             </a>
         </div>
     </div>
-    <div class="w-full max-w-md bg-black/30 border border-t-0 rounded-t-none border-rosebrand-700 backdrop-blur-md shadow-xl rounded-xl p-8 space-y-6">
-        <h2 class="text-2xl font-bold text-white text-center tracking-wide">Welcome back</h2>
 
+    <div class="w-full max-w-md bg-black/30 border border-t-0 rounded-t-none border-rosebrand-700 backdrop-blur-md shadow-xl rounded-xl p-8 space-y-6">
+        <div class="relative text-lg z-10 flex flex-row items-center justify-center gap-2 p-2 text-center">
+            <a class="transition-all duration-75 bg-rosebrand-500/50 shadow-md text-center ring-1 ring-rose-500 hover:text-white hover:ring-rose-400 hover:bg-rosebrand-500 p-2 rounded-md"  href="/discord">
+                <Fa icon={faGoogle} />
+            </a>
+            <a class="transition-all duration-75 bg-rosebrand-500/50 shadow-md ring-1 ring-rose-500 hover:text-white hover:ring-rose-400 hover:bg-rosebrand-500 p-2 rounded-md"  href="/discord">
+                <Fa icon={faDiscord} />
+            </a>
+            <a class="transition-all duration-75 bg-rosebrand-500/50 shadow-md text-center ring-1 ring-rose-500 hover:text-white hover:ring-rose-400 hover:bg-rosebrand-500 p-2 rounded-md"  href="/discord">
+                <Fa icon={faGithub} />
+            </a>
+            <a class="transition-all duration-75 bg-rosebrand-500/50 shadow-md text-center ring-1 ring-rose-500 hover:text-white hover:ring-rose-400 hover:bg-rosebrand-500 p-2 rounded-md"  href="/discord">
+                <Fa icon={faSpotify} />
+            </a>
+        </div>
+        <hr class="text-gray-300/50 w-4/5 mx-auto" />
+        <h2 class="text-2xl font-bold text-white text-center tracking-wide">Welcome back</h2>
         <form onsubmit={submit} class="space-y-5">
             <!-- Error Display-->
             {#if serverError}
