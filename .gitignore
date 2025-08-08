@@ -14,7 +14,7 @@ vendor/
 *.out
 *.log
 coverage.out
-
+nats-server.conf
 # OS/Editor
 .DS_Store
 Thumbs.db

@@ -3,12 +3,11 @@ import { browser } from '$app/environment';
 
 // Create a custom axios instance
 const client = axios.create({
-    baseURL: 'http://localhost:5000',
+    baseURL: 'http://localhost:5001',
     withCredentials: true,
     headers: {
         'Content-Type': 'application/json',
         'Accept': 'application/json',
-        'X-CSRF-Token': "WATERBOTTLETABLETOMATOES",
     }
 })
 
