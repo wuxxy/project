@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/wuxxy/project/echo/models"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 )
@@ -27,7 +28,7 @@ func ConnectToDb() {
 	if err != nil {
 		panic("failed to connect database")
 	}
-	err = Db.AutoMigrate(&models.User{}, &models.Session{}, &models.Service{})
+	err = Db.AutoMigrate(&models.User{})
 	if err != nil {
 		panic("failed to connect database")
 	}

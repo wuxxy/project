@@ -62,8 +62,10 @@ func OpenAuthToken(c iris.Context) {
 	// Send access token as success response
 	c.StatusCode(200)
 	_ = c.JSON(iris.Map{
-		"success":      true,
-		"access_token": accessToken,
+		"success":       true,
+		"access_token":  accessToken,
+		"refresh_token": refreshToken,
+		"token_type":    "Bearer",
 	})
 
 }

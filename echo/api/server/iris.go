@@ -3,6 +3,7 @@ package server
 import (
 	"github.com/iris-contrib/middleware/cors"
 	"github.com/kataras/iris/v12"
+	"github.com/wuxxy/project/echo/router"
 )
 
 func StartServer(port string) {
@@ -32,7 +33,9 @@ func StartServer(port string) {
 		// Continue to next handler
 		ctx.Next()
 	})
+	router.Init(app)
 	err := app.Listen(":6000")
+
 	if err != nil {
 		return
 	}

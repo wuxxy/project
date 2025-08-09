@@ -12,5 +12,6 @@ func main() {
 
 	database.ConnectToDb()
 	ipc.ConnectToNats()
+
 	server.StartServer(":5000")
 }

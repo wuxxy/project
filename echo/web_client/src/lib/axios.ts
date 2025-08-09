@@ -3,7 +3,7 @@ import { browser } from '$app/environment';
 
 // Create a custom axios instance
 const client = axios.create({
-    baseURL: 'http://localhost:5001',
+    baseURL: 'http://localhost:6000',
     withCredentials: true,
     headers: {
         'Content-Type': 'application/json',
@@ -15,7 +15,7 @@ const client = axios.create({
 client.interceptors.request.use(config => {
     // Only access localStorage in browser environment
     if (browser) {
-        const token = localStorage.getItem('accessToken');
+        const token = localStorage.getItem('token');
         if (token) {
             config.headers.Authorization = `Bearer ${token}`;
         }

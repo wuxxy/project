@@ -30,7 +30,7 @@ function createUserStore() {
                     // @ts-ignore
                 if(err.response.data.error =="Invalid or expired token"){
                         const refreshRes = await client.post('/auth/token');
-                        localStorage.setItem('accessToken', refreshRes.data.access_token);
+                        localStorage.setItem('token', refreshRes.data.access_token);
                         // Retry fetching user after refreshing token
                         return fetchUser();
                     }
@@ -44,7 +44,7 @@ function createUserStore() {
     async function logout(){
         try {
             await client.post('/api/logout');
-            localStorage.removeItem('accessToken');
+            localStorage.removeItem('token');
             set(null);
         } catch (err) {
             console.error('Logout failed:', err);
