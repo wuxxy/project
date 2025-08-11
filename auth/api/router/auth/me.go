@@ -19,8 +19,7 @@ func Me(c iris.Context) {
 	// Fetch user details from database
 	var user models.User
 	if err := database.Db.
-		Omit("Password").
-		Preload("Sessions").
+		Omit("Password", "Sessions", "Locations", "UserAgents", "CreatedAt", "UpdatedAt").
 		First(&user, "users.id = ?", userID).Error; err != nil {
 		c.StatusCode(iris.StatusInternalServerError)
 		_ = c.JSON(iris.Map{"error": "Failed to fetch user details"})

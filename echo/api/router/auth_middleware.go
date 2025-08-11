@@ -10,9 +10,9 @@ import (
 )
 
 type VerifyTokenResponse struct {
-	SessionID string
-	UserID    string
-	Error     string
+	Error     string `msgpack:"error"`
+	SessionID string `msgpack:"session_id,omitempty"`
+	UserID    string `msgpack:"user_id,omitempty"`
 }
 
 func AuthMiddleware(ctx iris.Context) {
@@ -25,6 +25,19 @@ func AuthMiddleware(ctx iris.Context) {
 	}
 	var res VerifyTokenResponse
 	err = msgpack.Unmarshal(msgPackResponse.Data, &res)
-	log.Print(res.UserID)
+	if err != nil {
+		ctx.StatusCode(iris.StatusInternalServerError)
+		_ = ctx.JSON(iris.Map{"error": "Internal server error"})
+		return
+	}
+	if res.Error != "" {
+
+		ctx.StatusCode(iris.StatusUnauthorized)
+		_ = ctx.JSON(iris.Map{"error": res.Error})
+		return
+	}
+	log.Print(res.SessionID)
+	ctx.Values().Set("user_id", res.UserID)
+	ctx.Values().Set("session_id", res.SessionID)
 	ctx.Next()
 }

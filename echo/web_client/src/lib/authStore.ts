@@ -1,5 +1,5 @@
 import { writable } from 'svelte/store';
-import {client} from "$lib/axios";
+import {authxios, client} from "$lib/axios";
 
 type User = {
     ID: number;
@@ -22,14 +22,14 @@ function createUserStore() {
 
     async function fetchUser() {
         try {
-            const res = await client.get('/api/me');
+            const res = await client.get('/api/user/me');
             set(res.data);
         } catch (err) {
             try{
                 // Attempt to refresh token if available
                     // @ts-ignore
                 if(err.response.data.error =="Invalid or expired token"){
-                        const refreshRes = await client.post('/auth/token');
+                        const refreshRes = await authxios.post('/auth/token');
                         localStorage.setItem('token', refreshRes.data.access_token);
                         // Retry fetching user after refreshing token
                         return fetchUser();

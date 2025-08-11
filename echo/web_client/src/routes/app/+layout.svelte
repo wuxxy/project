@@ -2,6 +2,7 @@
     import {onMount} from "svelte";
     import {page} from "$app/state";
     import ServerList from "./ServerList.svelte";
+    import {user} from "$lib/authStore.js";
     let {children} = $props();
     onMount(() => {
         const token = localStorage.getItem('token');
@@ -13,6 +14,8 @@
             redirectUrl.searchParams.set('r', 'http://localhost:6001/redirect');
 
             window.location.href = redirectUrl.toString();
+        }else{
+            user.fetchUser()
         }
     });
 </script>
@@ -29,5 +32,13 @@
         {@render children()}
     </div>
 
-    <footer class="app-bg-dark-2 w-full p-4">s</footer>
+    <footer class="app-bg-dark-2 w-full p-4">
+        <div>
+            {#if $user}
+                {$user.username}
+            {:else}
+                <span class="text-gray-500">Loading user...</span>
+            {/if}
+        </div>
+    </footer>
 </main>

@@ -34,7 +34,7 @@ func StartServer(port string) {
 		ctx.Next()
 	})
 	router.Init(app)
-	err := app.Listen(":6000")
+	err := app.Listen(":5002")
 
 	if err != nil {
 		return

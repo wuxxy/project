@@ -7,5 +7,5 @@ import (
 
 func Init(app *iris.Application) {
 	apiRouter := app.Party("/api", AuthMiddleware)
-	apiRouter.Post("/user/me", user.Me)
+	apiRouter.Get("/user/me", user.Me)
 }
