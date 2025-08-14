@@ -8,10 +8,5 @@ export const handler: Handler = (data: any, socket: Socket) => {
         SOCKETS.delete(socket.id);
         return;
     }
-    if (Date.now() - socket.lastPing > HEARTBEAT_INTERVAL+500 || Date.now() - socket.lastPing < HEARTBEAT_INTERVAL+500) {
-        socket.error("Incorrect ping interval");
-        socket.instance.close();
-        SOCKETS.delete(socket.id);
-        return;
-    }
+    socket.lastPing = Date.now();
 }

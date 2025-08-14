@@ -25,6 +25,7 @@ export const handler = (data: any, socket: Socket) => {
                 return;
             }
             socket.userID = decodedRes.user_id;
+            socket.lastPing = Date.now();
             socket.sendDirectly("hello", {
                 ssid: socket.id,
                 user_id: decodedRes.user_id,

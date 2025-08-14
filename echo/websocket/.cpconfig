@@ -1,0 +1,9 @@
+{
+    "name":"echo:websocket",
+    "version":"1.0.0",
+    "description":"WebSocket server for echo",
+    "scripts":{
+        "PROD":"",
+        "DEV":"deno run dev"
+    }
+}

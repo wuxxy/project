@@ -1,0 +1,8 @@
+{
+  "tasks": {
+    "dev": "deno run --unstable-worker-options --allow-read --allow-env --allow-run main.ts"
+  },
+  "imports": {
+    "@std/assert": "jsr:@std/assert@1"
+  }
+}

@@ -4,7 +4,7 @@ import {connectNats} from "./ipc.ts";
 
 
 // A queue for messages that are not yet sent to channels
-let QUEUE: Map<ChannelID, MESSAGE>
+export let QUEUE: Map<ChannelID, MESSAGE>
 // A list of all active sockets
 export const SOCKETS: Map<SocketID, Socket> = new Map();
 // A list of all active channels
@@ -42,7 +42,8 @@ setInterval(() => {
             }
             return;
         };
-        if (Date.now() - socket.lastPing > HEARTBEAT_INTERVAL+500 || Date.now() - socket.lastPing < HEARTBEAT_INTERVAL+500) {
+        const durationBetweenPings = socket.lastPing+HEARTBEAT_INTERVAL - socket.lastPing;
+        if (durationBetweenPings >= HEARTBEAT_INTERVAL+1500 || durationBetweenPings <= HEARTBEAT_INTERVAL-1500) {
             socket.error("Ping timeout");
             socket.instance.close();
             SOCKETS.delete(socket.id);

@@ -1,8 +1,8 @@
 <script>
     let communities = [
-        { name: "Community A", description: "Description for Community A" },
-        { name: "Community B", description: "Description for Community B" },
-        { name: "Community C", description: "Description for Community C" }
+        { name: "A", description: "Description for Community A" },
+        { name: "B", description: "Description for B" },
+        { name: "C", description: "Description for C" }
     ];
 </script>
 <div class="w-full items-stretch gap-4 flex flex-col">

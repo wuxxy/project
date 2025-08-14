@@ -1,6 +1,7 @@
 import type { PageServerLoad } from './$types';
 import { fail } from '@sveltejs/kit';
 import axios from 'axios';
+import {client} from "$lib/axios";
 
 export const load: PageServerLoad = async ({ url }) => {
     const code = url.searchParams.get('code');
@@ -28,7 +29,7 @@ export const load: PageServerLoad = async ({ url }) => {
         if (!access_token || !state) {
             throw new Error('Missing token or redirect URI');
         }
-
+        const getEchoUser = await client.post('/api/user/get')
         return {
             access_token,
             state

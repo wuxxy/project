@@ -9,5 +9,11 @@ export default defineConfig({
     },
     preview: {
         port: 6001, // Change this to your desired port for preview
+    },
+    ssr: {
+        noExternal: ['@hugeicons/svelte'] // compile its Svelte files on SSR
+    },
+    optimizeDeps: {
+        include: ['@hugeicons/svelte']
     }
 });

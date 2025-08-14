@@ -1,13 +1,66 @@
 @import url('https://fonts.googleapis.com/css2?family=Karla:ital,wght@0,200..800;1,200..800&display=swap');
 @import 'tailwindcss';
+@plugin "daisyui";
 @plugin '@tailwindcss/forms';
 @plugin '@tailwindcss/typography';
+@plugin "daisyui/theme" {
+    name: "echo";
+    default: true;
+    prefersdark: true;
+    color-scheme: dark;
+
+    /* Base backgrounds from your .app-bg-dark-1 & .app-bg-dark-2 */
+    --color-base-100: #15101E; /* main app background */
+    --color-base-200: #130F17; /* slightly darker panels */
+    --color-base-300: oklch(20% 0.02 260); /* extra-dark for borders/accents */
+    --color-base-content: oklch(96% 0.02 260); /* light text */
+
+    /* Brand colors */
+    --color-primary: #2C135B;           /* deep purple */
+    --color-primary-content: oklch(96% 0.02 260);
+
+    --color-secondary: #FF8A3D;         /* vivid orange */
+    --color-secondary-content: oklch(15% 0.03 50);
+
+    /* Accent & feedback colors */
+    --color-accent: oklch(65% 0.25 160);
+    --color-accent-content: oklch(96% 0.02 160);
+
+    --color-neutral: #1E1928; /* muted neutral between base-100 and base-200 */
+    --color-neutral-content: oklch(96% 0.02 260);
+
+    --color-info: oklch(75% 0.15 240);
+    --color-info-content: oklch(10% 0.02 240);
+
+    --color-success: oklch(70% 0.18 150);
+    --color-success-content: oklch(10% 0.02 150);
+
+    --color-warning: oklch(80% 0.20 80);
+    --color-warning-content: oklch(15% 0.03 80);
+
+    --color-error: oklch(65% 0.22 30);
+    --color-error-content: oklch(96% 0.02 30);
+
+    /* Radius, sizing, borders, etc. */
+    --radius-selector: 1rem;
+    --radius-field: 0.25rem;
+    --radius-box: 0.5rem;
+
+    --size-selector: 0.25rem;
+    --size-field: 0.25rem;
+
+    --border: 1px;
+
+    --depth: 1;
+    --noise: 0;
+}
 .app-bg-dark-1{
-    background: #120413;
+    background: #15101E;
 }
 .app-bg-dark-2{
-    background: #110a10;
+    background: #130F17;
 }
 body {
+    color: #E5DCFC;
     font-family: "Karla", monospace;
 }

@@ -9,6 +9,7 @@ import (
 
 func main() {
 	_ = godotenv.Load()
+
 	database.ConnectToDb()
 	ipc.ConnectToNats()
 	server.StartServer(":6000")
